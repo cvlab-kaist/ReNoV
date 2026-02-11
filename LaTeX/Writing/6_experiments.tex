@@ -1,0 +1,312 @@
+\section{Experiments}
+
+\subsection{Implementation details}
+
+% \begin{table}[t]
+%   \centering
+%   \resizebox{\linewidth}{!}{%
+%     \begin{tabular}{c|ccc|ccc}
+%       \toprule
+%       \multirow{2}{*}{\centering \textbf{Method}} & \multicolumn{3}{c|}{\textbf{Far-view Setting}} & \multicolumn{3}{c}{\textbf{Near-view Setting}} \\
+%       \cmidrule(lr){2-4} \cmidrule(lr){5-7}
+%        & PSNR$\uparrow$ & SSIM$\uparrow$ & LPIPS$\downarrow$ 
+%        & PSNR$\uparrow$ & SSIM$\uparrow$ & LPIPS$\downarrow$ \\
+%       \midrule
+%        PixelSplat$^\dagger$~\citep{charatan2024pixelsplat}   
+%        & 13.03 & 0.486 & 0.414
+%        & 11.57 & 0.330 & 0.634 \\
+%        MVSplat$^\dagger$~\citep{chen2024mvsplat}  
+%        & 12.22 & 0.416 & 0.423
+%        & 13.94 & 0.473 & 0.385 \\
+%        NopoSplat~\citep{ye2024no}  
+%        & 13.58 & 0.393 & 0.545
+%        & 14.04 & 0.414 & 0.503 \\
+%       \midrule
+%        \textbf{ReNoV (Ours)}  
+%        & \textbf{15.45} & \textbf{0.584} & \textbf{0.297}
+%        & \textbf{15.38} & \textbf{0.599} & \textbf{0.274} \\
+%       \bottomrule
+%     \end{tabular}%
+%   }
+%   \caption{\textbf{Zero-shot evaluation on the DTU~\citep{jensen2014large}.} $^\dagger$ denotes methods that require camera poses of the reference images.} 
+%   \label{table:dtu_quan_zeroshot} 
+% \end{table}
+
+\newcommand{\cmark}{\ding{51}} % ✓
+\newcommand{\xmark}{\ding{55}} % ✗
+
+\begin{table*}[t]
+  \centering
+  \small
+  \setlength{\tabcolsep}{6pt}
+  \resizebox{0.9\linewidth}{!}{%
+  %            v---- between Views|Method   v---- between Method|Pose-free   v---- after Pose-free
+  \begin{tabular}{c|l|c|ccc|ccc}
+    \toprule
+    \multirow{2}{*}{\centering\textbf{Views}} & \multirow{2}{*}{\centering\textbf{Method}} & \multirow{2}{*}{\centering{\textbf{Pose-free}}}
+      & \multicolumn{3}{c}{\textbf{Far-view Setting}}
+      & \multicolumn{3}{c}{\textbf{Near-view Setting}} \\
+    \cmidrule(lr){4-6}\cmidrule(lr){7-9}
+     &  &  & PSNR$\uparrow$ & SSIM$\uparrow$ & LPIPS$\downarrow$
+               & PSNR$\uparrow$ & SSIM$\uparrow$ & LPIPS$\downarrow$ \\
+    \midrule
+    \multirow{9}{*}{\centering\textbf{2-view}}
+      & PixelSplat~\citep{charatan2024pixelsplat} & \xmark
+      & 13.03 & 0.486 & 0.414
+      & 11.57 & 0.330 & 0.634 \\
+      & MVSplat~\citep{chen2024mvsplat} & \xmark
+      & 12.22 & 0.416 & 0.423
+      & 13.94 & 0.473 & 0.385 \\
+      & NoPoSplat~\citep{ye2024no} & \cmark
+      & 11.43	& 0.335	& 0.599
+      & 11.44 & 0.357 & 0.576 \\
+      & FLARE~\citep{zhang2025flare}& \xmark
+      & 13.52 & 0.407 & 0.525 
+      & 13.25 & 0.381 & 0.502 \\
+      & LVSM~\citep{jin2024lvsm} & \xmark
+      & \underline{15.23} & 0.499 & 0.415
+      & \textbf{15.82} & 0.528 & 0.346 \\
+      \cmidrule(lr){2-9}
+      & \textbf{ReNoV} w/ DINOv2~\citep{oquab2023dinov2} & \cmark
+      & 15.13 & \textbf{0.599} & 0.304
+      & 14.70 & \textbf{0.602} & 0.277 \\
+      & \textbf{ReNoV} w/ VGGT~\citep{wang2025vggt} & \cmark
+      & \textbf{15.45} & \underline{0.584} & \textbf{0.297}
+      & \underline{15.38} & \underline{0.599} & \underline{0.274} \\
+      & \textbf{ReNoV} w/ DA3~\citep{lin2025depth} & \cmark
+      & 14.38 & 0.550 & \underline{0.303}
+      & 14.91 & 0.593 & \textbf{0.259} \\
+    \midrule
+    \midrule
+    \multirow{6}{*}{\centering\textbf{1-view}}
+      & LucidDreamer~\citep{chung2023luciddreamer} & \cmark
+      & 12.96 & 0.248 & 0.385
+      & 12.09 & 0.481 & 0.419 \\
+      & GenWarp~\citep{seo2024genwarp} & \cmark
+      & 8.69 & 0.253 & 0.597
+      & 9.54 & 0.298 & 0.538 \\
+      & ViewCrafter~\citep{ma2025efficient} & \cmark & 14.04 & 0.390 & 0.332 & 13.59 & 0.382  & 0.486 \\
+      \cmidrule(lr){2-9}
+      & \textbf{ReNoV} w/ DINOv2~\citep{oquab2023dinov2} & \cmark
+      & \textbf{15.02} & \textbf{0.579} & \underline{0.328}
+      & \textbf{14.13} & \textbf{0.574} & \underline{0.304} \\
+      & \textbf{ReNoV} w/ VGGT~\citep{wang2025vggt} & \cmark
+      & 14.08 & \underline{0.536} & 0.355
+      & 13.91 & 0.542 & 0.333 \\
+      & \textbf{ReNoV} w/ DA3~\citep{lin2025depth} & \cmark
+      & \underline{14.35} & 0.534 & \textbf{0.325}
+      & \underline{14.12} & \underline{0.550} & \textbf{0.292} \\
+    \bottomrule
+  \end{tabular}}
+    \caption{\textbf{Zero-shot evaluation on the DTU~\citep{jensen2014large} dataset.} NoPoSplat and LVSM apply camera pose optimization in their test time. For a fair comparison, all models are evaluated in feed-forward manners, without test-time optimization. For further details, see ~\ref{supp:eval_detail}. \textbf{Bold} indicates the best performance, and \underline{underline} indicates the second best.}
+    \label{table:dtu_zeroshot}
+  \vspace{-20pt}
+\end{table*}
+
+
+For our image synthesis pipeline, we initialize from the pre-trained Stable Diffusion 2.1 model~\citep{rombach2022high}. The reference feature extraction networks share an identical architecture with the denoising U-Net but exclude timestep embeddings, as they are designed solely for semantic feature extraction rather than denoising operations.
+Training is conducted on three multi-view datasets: RealEstate10K~\citep{zhou2018stereo} for diverse indoor/outdoor scenes, Co3D~\citep{reizenstein2021common} for object-centric captures, and MVImgNet~\citep{yu2023mvimgnet} for extensive multi-view imagery. We generate pseudo ground-truth geometry with an external geometry predictor~\citep{wang2025vggt, lin2025depth}, which provides both depth maps and normal predictions to establish reliable geometric supervision. During training, reference pointmaps is leveraged for explicit geometric warping of external representation between viewpoints and establishment of geometric conditioning signals that guide generation. The external representations undergo geometry-aware warping, ensuring proper transfer of spatial and semantic information across viewpoints while maintaining geometric consistency throughout synthesis.
+% Abs.Rel 다 지우기 (dept)
+
+
+
+
+% \subsection{Experimental results}
+% \begin{table*}[tb!]
+%     \centering
+%     \resizebox{\linewidth}{!}{%
+%     \begin{tabular}{c|ccc|ccc}
+%         \toprule
+%         \multirow{2}{*}{\centering \textbf{Method}} & \multicolumn{3}{c|}{\textbf{Extrapolation}} & \multicolumn{3}{c}{\textbf{Interpolation}} \\
+%         \cmidrule(lr){2-4} \cmidrule(lr){5-7}
+%          & PSNR$\uparrow$ & SSIM$\uparrow$ & LPIPS$\downarrow$ & 
+%          & PSNR$\uparrow$ & SSIM$\uparrow$ & LPIPS$\downarrow$ \\
+%         \midrule
+%          Something~\citep{}  
+%          & 12.13 & 0.534 & 0.380 & 0.234 & 13.986 
+%          & 23.98 & 0.811 & 0.176 & - & - \\
+%          Something2~\citep{}  
+%          & 12.13 & 0.534 & 0.380 & 0.234 & 13.986 
+%          & 23.98 & 0.811 & 0.176 & - & - \\
+%          PixelSplat~\citep{charatan2024pixelsplat}   
+%          & 14.01 & 0.582 & 0.384 & 0.264 & 14.341 
+%          & 23.85 & 0.806 & 0.185 & - & -  \\
+%          MVSplat~\citep{chen2024mvsplat}  
+%          & 12.13 & 0.534 & 0.380 & 0.234 & 13.986 
+%          & 23.98 & 0.811 & 0.176 & - & - \\
+%          NopoSplat~\citep{wu2023reconfusion}  
+%          & 14.36 & 0.538 & 0.389 & 0.217 & 13.762
+%          & \textbf{25.03} & \textbf{0.838} & \textbf{0.160} & - & -  \\
+%         %  LucidDreamer~\citep{chung2023luciddreamer} 
+%         %  & - & - & - & - & - 
+%         %  & - & - & - & - & - \\
+        
+%         % GenWarp~\citep{seo2024genwarp} 
+%         %  & - & - & - & - & - 
+%         %  & - & - & - & - & - \\     
+         
+%          \midrule
+%          \textbf{Ours} & \textbf{17.04} & \textbf{0.617} & \textbf{0.228} & \textbf{0.143} & \textbf{9.050}  & -- & -- & - & - & - \\
+%         \bottomrule
+%     \end{tabular}}
+%     \caption{\textbf{Quantitative comparison of two-view 3D reconstruction}. \minseop{Under the two-view setting, our method outperforms previous feedforward NVS approaches in the extrapolative setting in both image generation and depth prediction, while showing competitive performance in the interpolative setting as well.}}
+%     \label{tab:re10k}
+%     \vspace{-10pt}
+% \end{table*}
+
+% \begin{figure*}[ht!]
+%     \centering
+%     \includegraphics[width=1.0\textwidth]{Figures/qual_result.pdf}
+%     \caption{\textbf{Qualitative comparison on extrapolative setting.} 
+%     Qualitative results demonstrate our model's extrapolative capabilities to plausibly generate locations not seen in reference images while faithfully reconstructing the known regions.}
+%     \label{fig:qual_compare}
+%     \vspace{-10pt}
+% \end{figure*}
+
+\begin{figure*}[ht!]
+    \centering
+    \includegraphics[width=1.0\textwidth]{Figures/dtu_qual.pdf}
+
+    \caption{\textbf{Qualitative comparison on far-view setting at DTU dataset.} 
+    Qualitative results of our model using far-view camera setting demonstrate our model(ReNoV w/ VGGT)'s extrapolative capabilities to plausibly generate locations not seen in reference images while faithfully reconstructing the known regions.}
+    \label{fig:dtu_qual}
+
+\end{figure*}
+
+\subsection{Experiment results}
+% \subsection{Comparison with non-generative novel view synthesis models.}
+
+
+
+
+\paragraph{Comparison with non-generative novel view synthesis models.} We compare our method with non-generative novel view synthesis models~\citep{charatan2024pixelsplat, chen2024mvsplat, ye2024no} on RealEstate10K~\citep{zhou2018stereo} using a challenging far-view setting that requires extensive inpainting of missing regions. We evaluate on three target views conditioned on two reference views, with target cameras positioned far from reference cameras to create large unknown areas. As shown in Table~\ref{table:nvs_quan}, our method outperforms state-of-the-art approaches even without camera pose access. Non-generative methods struggle in this extrapolative setting due to their inability to generate unseen regions, being limited to fusing existing input views. In contrast, our diffusion-based approach enables strong performance on both interpolation and extrapolation tasks. The qualitative results (Fig.~\ref{fig:qual_compare}) demonstrate semantically plausible inpainting and accurate geometry reconstruction, attributed to features that incorporate both geometric and semantic information.
+
+% We first compare our method with non-generative novel view synthesis models on the test set of RealEstate10K~\citep{zhou2018stereo}. To carefully compare the properties of the models~\citep{charatan2024pixelsplat, chen2024mvsplat, ye2024no}, we conduct experiments in a far-view setting that requires major inpainting of missing regions. Following ~\citep{charatan2024pixelsplat, chen2024mvsplat,ye2024no}, we evaluate models on three target views conditioned on two reference views, but we modify the camera setting so that target camera stays far away from the reference camera, leaving large unknown areas open, which we expect the model to fill in. As shown in Table~\ref{table:nvs_quan}, our method outperforms state-of-the-art approaches in this setting even without access to camera poses for the reference images. They struggle in this extrapolative setting, unable to inpaint the regions unseen by reference images. This limitation stems from their non-generative formulation, which allows effective fusion of input views for reconstruction but lacks the ability to generate unseen regions. In contrast, our method integrates feature warping and a diffusion formulation, enabling strong performance on both interpolation and extrapolation tasks. The qualitative results (Fig.~\ref{fig:qual_compare}) further highlight the ability of our method to produce semantically plausible inpainting results in unseen regions, while reconstructing accurate geometry. We attribute this ability to the use of features that incorporate both geometric and semantic information, which facilitates learning for both interpolation and extrapolation tasks.
+%jiho: 우리가 주장하는 sem&geo feat 설명이 더 들어가야하나?
+
+\paragraph{Zero-shot evaluation.} 
+We evaluate the generalization capability of our method using the DTU~\citep{jensen2014large} dataset, which was not seen during training. To comprehensively assess the generalization performance, we conduct evaluations under both near-view and far-view settings. For near-view, we follow the setting from MVSplat~\citep{chen2024mvsplat}, while the far-view setting is constructed by selecting the farthest view as the target. Table~\ref{table:dtu_zeroshot} shows that our method outperforms previous methods~\citep{charatan2024pixelsplat, chen2024mvsplat, ye2024no, zhang2025flare, jin2024lvsm} across both settings.
+The qualitative results from Fig.~\ref{fig:dtu_qual} show that our method produces accurate geometry and semantically consistent inpainting, even in challenging target viewpoint of the out-of-domain data.
+
+We also evaluate our approach using a single reference image against warping-and-inpainting approaches, LucidDreamer~\citep{chung2023luciddreamer}, GenWarp~\cite{seo2024genwarp}, and ViewCrafter~\cite{yu2024viewcrafter}. Evaluation is conducted on the DTU dataset~\citep{jensen2014large}. Table~\ref{table:dtu_zeroshot} demonstrates that our framework achieves superior performance in SSIM and LPIPS, maintaining competitive results in PSNR. 
+
+% \textbf{Comparison with generative novel view synthesis models.} 
+% - 다른 inpainting model에 비해서 나아지나? (DTU에서 GenWarp, LucidDreamer) (1문단)
+%     - Qual로만 보여주기 (Qual 에 대한 설명 )
+
+% - Ablation and analysis (1.5 문단)
+%     - Quan. Abl Analysis (SSIM / LPIPS)
+%         - 갈수록 잘한다
+%     - Qual. Abl Analysis (Attention)
+%         - 어떻게 잘하냐? 실제 결과가 나아졌고, Attention 찍어보니 우리가 원하는 효과
+%             - Naive와 비교했을 때 geometric 훨씬 잘함 (Cross-attention Only)
+%             - No VGGT와 compare: semantic 더 잘함
+
+
+\begin{figure*}
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{Figures/co3d_ablation_qual.pdf}
+    \end{center}
+    \caption{
+        \textbf{Qualitative results for ablation study.} \textbf{(Top):} Both (a) and (b) fail to reconstruct structurally consistent outputs, exhibiting misaligned body parts such as the arms, legs, and hat. In contrast, (c) effectively preserves both semantic consistency and structural integrity, producing coherent reconstructions aligned with the ground truth. \textbf{(Bottom):} Both (a) and (b) exhibit noticeable distortions in the wheel structure and fail to inpaint occluded background. Meanwhile, (c) achieves more accurate structural reconstruction and background inpainting, demonstrating superior semantic and geometric consistency.
+    }
+\label{fig:ablation_qual}
+\vspace{-10pt}
+\end{figure*}
+
+\begin{table}[t!]
+\begin{center}
+    \centering
+    \resizebox{1.0\linewidth}{!}{%
+    \begin{tabular}{c|ccc}
+        \toprule
+         \textbf{Method} & PSNR$\uparrow$ & SSIM$\uparrow$ & LPIPS$\downarrow$  \\
+        \midrule
+         PixelSplat$^\dagger$~\citep{charatan2024pixelsplat}   
+         & 14.01 & 0.582 & 0.384   \\
+         MVSplat$^\dagger$~\citep{chen2024mvsplat}  
+         & 12.13 & 0.534 & 0.380 \\
+         NopoSplat~\citep{ye2024no}  
+         & 14.36 & 0.538 & 0.389  \\
+        \midrule
+         \textbf{ReNoV w/ VGGT (Ours)} & \textbf{17.49} & \textbf{0.598} & \textbf{0.247}\\
+        \bottomrule
+    \end{tabular}}
+\caption{\textbf{In-domain evaluation for a far-view setting}. We provide a quantitative analysis against prior feedforward methods using the in-domain Realestate10k~\citep{zhou2018stereo} dataset. $^\dagger$ denotes methods that require camera poses of the reference images.} 
+\vspace{-20pt}
+\label{table:nvs_quan} 
+
+\end{center}
+\end{table}
+
+% \begin{table*}[t]
+% \centering
+% \label{tab:probing_results}
+% \begin{tabular}{lccc|ccc}
+% \toprule
+% \multirow{2}{*}{Method} & \multicolumn{3}{c|}{PSNR $\uparrow$} & \multicolumn{3}{c}{SSIM $\uparrow$} \\
+% & 1 view & 2 views & 3 views & 1 view & 2 views & 3 views \\
+% \midrule
+% CroCo (v2) & 15.28 & 15.37 & 15.47 & 0.440 & 0.434 & 0.435 \\
+% DINOv2 & 14.95 & 15.35 & 15.37 & 0.537 & 0.532 & 0.527 \\
+% CroCo (v2) + DINOv2 & 15.38 & 15.73 & 15.82 & 0.453 & 0.452 & 0.452 \\
+% \midrule
+% VGGT (Ours) & \textbf{15.81} & \textbf{16.01} & \textbf{16.13} & \textbf{0.552} & \textbf{0.540} & \textbf{0.543} \\
+% \bottomrule
+% \end{tabular}
+% \caption{\textbf{PLACEHOLDER.} Reconstruction quality comparison across different numbers of input views. Results show PSNR (dB) and SSIM metrics.}
+% \end{table*}
+
+\subsection{Ablation} 
+We explore how semantic and geometric conditioning features affect the performance of novel view synthesis. Specifically, we evaluate three configurations: (a) Baseline, utilizing semantic information from reference views via aggregated attention only; (b) Baseline with explicit geometric guidance using predicted pointmaps; and (c) our final model conditioned on implicit semantic and geometric information by VGGT features. Quantitatively, Table~\ref{tab:ablation_quan} shows that explicit geometry conditioning through pointmaps in (b) improves overall performance compared to the baseline. Furthermore, conditioning VGGT features in (c) results in significant performance gains, highlighting the effectiveness of implicit geometric and semantic conditioning for extrapolative synthesis.
+
+\begin{table}[t!]
+\begin{center}
+    \resizebox{0.5\textwidth}{!}{%
+    \begin{tabular}{l|ccc}
+    \toprule
+          Components & PSNR$\uparrow$ & SSIM$\uparrow$ & LPIPS$\downarrow$ \\
+          \midrule
+          (a) Warped image only & 16.55 & 0.559 & 0.260 \\
+          (b) Warped image + Pointmap condition & 16.93 & 0.594 & \textbf{0.243} \\
+          (c) Pointmap condition + VGGT Feature & \textbf{17.50} & \textbf{0.598} & 0.247 \\ 
+    \bottomrule    \end{tabular}}
+    \caption{\textbf{Quantitative results for ablation study at Realestate10k dataset.} Evaluation results shows that leveraging the pointmaps and VGGT features enhances novel view synthesis performance.}
+\label{tab:ablation_quan}
+\vspace{-30pt}
+\end{center}
+\end{table}
+
+
+In the qualitative evaluation (Fig.~\ref{fig:ablation_qual}), the baseline model (a) exhibits clear limitations in synthesizing structurally coherent novel views, resulting in perceptually distorted shapes and inconsistent reconstructions. Although explicit pointmap conditioning in (b) reduces geometric distortions, it still suffer from inaccurate inpainting due to insufficient semantic guidance. In contrast, our final configuration (c) utilizes VGGT features, which implicitly encode both semantic and geometric correspondences. This integrated conditioning allows the model to learn semantically consistent inpainting in challenging occluded regions, as well as structurally aligned reconstruction.
+%\vspace{-10pt}
+
+\begin{table}[t]
+\begin{center}
+    \centering
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{c|ccc}
+    \toprule
+          Removal percentage & PSNR$\uparrow$ & SSIM$\uparrow$ & LPIPS$\downarrow$ \\
+          \midrule
+          No removal  (Original setting) & 12.04 & 0.509 & 0.371 \\
+          30\% removal & 11.89 & 0.507 & 0.366 \\
+          50\% removal & 11.92 & 0.507 & 0.367 \\
+    \bottomrule    
+    \end{tabular}}
+    \caption{\textbf{Robustness to degraded point clouds on DTU dataset.} Our method's performance remains stable even with geometric points used for novel view warping randomly masked.}
+\label{tab:point_removal}
+\end{center}
+\vspace{-10pt}
+\end{table}
+
+\subsection{Robustness to Degraded Geometry}
+\label{sec:robustness}
+
+To evaluate our model's robustness to imperfect geometric inputs, we conducted ablation experiments by randomly subsampling point clouds, removing 30--50\% of points before warping-and-inpainting. We evaluate on the DTU dataset using the extreme (extrapolative) view setting, where point cloud projection is most susceptible to errors.
+
+As shown in Table~\ref{tab:point_removal}, our model maintains stable performance despite significantly degraded inputs (PSNR drops only 0.12 with 50\% removal). This demonstrates that our diffusion framework effectively compensates for incomplete geometric information through learned generative priors and robust denoising capabilities, handling noisy or incomplete warped features inherently through its training process.
+
+%\vspace{-10pt}
+
+% \jin{For qualitative results (Fig.~\ref{fig:ablation_qual}), the baseline model (a) exhibits clear limitations in synthesizing structurally coherent novel views, resulting in perceptually distorted shapes and inconsistent reconstructions. Although explicit pointmaps conditioning in (b) reduces geometric distortions and aligns structural correspondences, it still lacks sufficient semantic and geometric guidance to recover finer visual details. In contrast, our final configuration (c) utilizes VGGT features, which implicitly encode both semantic and geometric correspondences. This joint conditioning allows the model to robustly synthesize semantically consistent and structurally aligned object even in challenging occluded areas, substantially enhancing both visual realism and perceptual consistency of the generated views.}

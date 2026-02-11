@@ -1,0 +1,116 @@
+\documentclass{article}
+
+
+% if you need to pass options to natbib, use, e.g.:
+% \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2025
+
+% ready for submission
+% \usepackage{neurips_2025}
+
+% \usepackage{lipsum}
+
+% \documentclass{article} % For LaTeX2e
+% \usepackage{icml2026,times}
+\usepackage[preprint]{icml2026}
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+% \usepackage[preprint]{neurips_2025}
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_2025}
+
+
+% to avoid loading the natbib package, add option nonatbib:
+%    \usepackage[nonatbib]{neurips_2025}
+
+\usepackage{lineno}
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+% \usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+\usepackage{lipsum}
+\usepackage{wrapfig, booktabs}
+\usepackage{booktabs}    % nice table rules
+\usepackage{subcaption}  % for sub-tables
+\usepackage{tabularx}
+\usepackage{booktabs} % for better lines and spacing
+\usepackage{natbib}
+\usepackage{pifont}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{cleveref}
+
+\input{math_commands.tex}
+
+
+\input{preamble}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+\icmlsetsymbol{equal}{*}
+\icmlsetsymbol{corresponding}{†}
+
+\begin{document}
+
+\renewcommand{\icmlsetsymbol}[1]{}
+
+\twocolumn[
+  \icmltitle{Projected Representation Prompting for High-fidelity Novel View Synthesis}
+
+  \begin{icmlauthorlist}
+    \icmlauthor{Minseop Kwak}{equal,yyy}
+    \icmlauthor{Minkyung Kwon}{equal,yyy}
+    \icmlauthor{Jinhyeok Choi}{equal,yyy}
+    \icmlauthor{Jiho Park}{yyy}
+    \icmlauthor{Seungryong Kim}{yyy}
+  \end{icmlauthorlist}
+
+  \icmlcorrespondingauthor{Seungryong Kim}{seungryong.kim@kaist.ac.kr}
+
+  \icmlaffiliation{yyy}{KAIST AI}
+
+  \begin{center}
+    {\tt \href{https://cvlab-kaist.github.io/ReNoV}{https://cvlab-kaist.github.io/ReNoV}}
+  \end{center}
+
+  \vskip 0.3in
+]
+
+
+\printAffiliationsAndNotice{%
+  \icmlEqualContribution
+}
+
+\icmlkeywords{Machine Learning, ICML}
+
+\begin{abstract}
+We propose a novel framework for diffusion-based novel view synthesis in which we leverage external representations as conditions, harnessing their geometric and semantic correspondence properties for enhanced geometric consistency in generated novel viewpoints. First, we provide a detailed analysis exploring the correspondence capabilities emergent in the spatial attention of external visual representations. Building from these insights, we propose projected representation prompting, achieving representation-guided novel view synthesis through dedicated representation projection modules that inject external representations into the diffusion process, a methodology named \textbf{ReNoV} (\textbf{Re}presentation-guided \textbf{No}vel \textbf{V}iew synthesis). Our experiments show that this design yields marked improvements in both reconstruction fidelity and inpainting quality, outperforming prior diffusion‐based novel‐view methods on standard benchmarks and enabling robust synthesis from sparse, unposed image collections. %Project page is available at \url{https://cvlab-kaist.github.io/ReNoV/}. 
+\end{abstract}
+
+\input{Writing/1_introduction}
+\input{Writing/2_related_work}
+\input{Writing/3_motivation}
+\input{Writing/4_analysis}
+\input{Writing/5_methodology}
+\input{Writing/6_experiments}
+\input{Writing/7_conclusion}
+
+%\clearpage  % Start appendix on a new page
+\input{appendix}
+\bibliography{icml2026_conference}
+\bibliographystyle{icml2026}
+
+\end{document}

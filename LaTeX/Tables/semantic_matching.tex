@@ -1,0 +1,55 @@
+
+\begin{table*}[htb!]
+    \centering
+    {\small
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{c|c|cccccccccc|c}
+        \toprule
+        & \multirow{2}{*}{\centering \textbf{Model}} & \multicolumn{10}{c|}{\textbf{SPair-71k Category}} & \multicolumn{1}{c}{ } \\
+        \cmidrule(lr){3-12}
+         &
+         & Boat & Bottle & Cat & Chair & Cow
+         & Dog & Horse & Plant & Train & TV & All\\
+        \midrule
+         \multirow{5}{*}{\rotatebox{90}{\shortstack[c]{PCK\\($\alpha_{\text{bbox}} = 0.1$)\\per image}}} & CroCo~\cite{weinzaepfel2022croco}  
+         & 9.60 & 21.0 & 18.7 & 9.50 & 13.9 & 10.6 & 9.10 & 12.6 & 22.7 & 13.8 & 14.3 \\
+         & DINO~\cite{caron2021emerging}  
+         & 24.0 & 30.5 & 55.2 & 16.8 & 40.2 & 37.1 & 32.9 & 22.0 & 36.4 & 26.9 & 33.9   \\
+          & OpenCLIP~\cite{cherti2023reproducible}  
+         & 28.4 & 31.5 & 56.4 & 21.1 & 44.5 & 41.2 & 51.8 & 21.7  & 46.3 & 20.7 & 38.4 \\
+         & DINOv2~\cite{oquab2023dinov2}  
+        & \underline{33.1} & \underline{47.2} & \textbf{76.0} & \underline{37.4} & \textbf{71.3} & \textbf{65.4} & \textbf{64.6} & \underline{35.4} & \underline{50.4} & \underline{30.7} & \textbf{54.6}  \\
+         & VGGT-4~\cite{wang2025vggt}  
+         & \textbf{33.5} & \textbf{49.2} & \underline{74.4} & \textbf{37.4} & \underline{68.3} & \underline{56.8} & \underline{58.2} & \textbf{45.5} & \textbf{56.9} & \textbf{45.2} & \underline{53.5}  \\
+         & VGGT-11~\cite{wang2025vggt}  
+         & 24.5 & 42.6 & 71.7 & 33.0 & 60.7 & 46.1 & 45.0 & 34.6 & 51.1 & 37.8 & 44.1 \\
+         & VGGT-17~\cite{wang2025vggt}  
+         & 8.9 & 20.9 & 28.5 & 13.1 & 21.3 & 18.9 & 15.6 & 12.8 & 20.6 & 9.5 & 16.1 \\
+         & VGGT-23~\cite{wang2025vggt}  
+         & 8.0 & 20.0 & 18.0 & 8.8 & 13.4 & 11.0 & 9.9 & 9.9 & 14.4 & 5.8 & 11.4 \\
+
+         \midrule
+ 
+         \multirow{5}{*}{\rotatebox{90}{\shortstack[c]{PCK\\($\alpha_{\text{bbox}} = 0.1$)\\per point}}} & CroCo~\cite{weinzaepfel2022croco}  
+         & 12.0 & 21.6 & 18.3 & 10.3 & 16.1 & 11.1 & 9.9 & 12.8 & 24.0 & 13.2 & 16.3 \\
+         & DINO~\cite{caron2021emerging}  
+         & 22.8 & 32.1 & 54.8 & 18.7 & 43.1 & 39.2 & 34.9 & 23.1 & 38.4 & 27.1 & 36.7   \\
+          & OpenCLIP~\cite{cherti2023reproducible}  
+         & 28.0 & 33.3 & 55.8 & 23.3 & 47.0 & 43.9 & 44.1 & 23.6 & 47.8 & 21.8 & 41.4  \\
+         & DINOv2~\cite{oquab2023dinov2}  
+        & \textbf{33.6} & \underline{49.0} & \textbf{75.9} & \underline{39.4} & \textbf{73.7} & \textbf{67.2} & \textbf{66.3} & \underline{36.5} & \underline{52.4} & \underline{33.2} & \textbf{57.9} \\
+         & VGGT-4~\cite{wang2025vggt}  
+         & \underline{33.5} & \textbf{50.3} & \underline{74.1} & \textbf{40.3} & \underline{70.5} & \underline{59.3} & \underline{60.2} &\textbf{48.9} & \textbf{60.4} & \textbf{47.1} & \underline{57.6}  \\
+         & VGGT-11~\cite{wang2025vggt}  
+         & 27.2 & 44.4 & 71.5 & 43.6 & 65.6 & 49.0 & 48.1 & 38.4 & 54.6 & 40.3 & 49.3  \\
+         & VGGT-17~\cite{wang2025vggt}  
+         & 10.6 & 22.1 & 28.5 & 15.1 & 25.0 & 20.1 & 18.0 & 13.9 & 22.1 & 12.9 & 18.9 \\
+         & VGGT-23~\cite{wang2025vggt}  
+         & 10.1 & 21.2 & 18.2 & 9.8 & 15.7 & 11.7 & 11.4 & 11.0 & 15.3 & 7.4 & 13.3 \\
+        \bottomrule
+    \end{tabular}}
+    }
+  \caption{\textbf{PCK($\alpha_{\text{bbox}} = 0.1$) per image and per point on SPair-71k.}  VGGT layer 4 achieves semantic matching performance comparable to DINOv2, despite not being explicitly trained for semantic matching. It even outperforms DINOv2 in several categories, including Bottle, Chair, Plant, Train, and TV. Performance declines in deeper layers, indicating that semantic information is primarily captured in the early stages. Best results are \textbf{bolded}, and second-best results are \underline{underlined}. }
+    \label{tab:semantics}
+    \vspace{-15pt}
+\end{table*}

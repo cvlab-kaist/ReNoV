@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReNoV: Projected Representation Prompting for High-fidelity Novel View Synthesis</title>
+    <meta name="description"
+        content="Project page for ReNoV: Projected Representation Prompting for High-fidelity Novel View Synthesis">
+
+    <!-- Fonts and Icons -->
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.1/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <a href="#overview" class="sidebar-item">
+            <div class="sidebar-dot"></div>
+            <span class="sidebar-label">Overview</span>
+        </a>
+        <a href="#abstract" class="sidebar-item">
+            <div class="sidebar-dot"></div>
+            <span class="sidebar-label">Abstract</span>
+        </a>
+        <a href="#motivation" class="sidebar-item">
+            <div class="sidebar-dot"></div>
+            <span class="sidebar-label">Motivation</span>
+        </a>
+        <a href="#method" class="sidebar-item">
+            <div class="sidebar-dot"></div>
+            <span class="sidebar-label">Method</span>
+        </a>
+        <a href="#quantitative" class="sidebar-item">
+            <div class="sidebar-dot"></div>
+            <span class="sidebar-label">Quantitative</span>
+        </a>
+        <a href="#results" class="sidebar-item">
+            <div class="sidebar-dot"></div>
+            <span class="sidebar-label">Qualitative</span>
+        </a>
+        <a href="#citation" class="sidebar-item">
+            <div class="sidebar-dot"></div>
+            <span class="sidebar-label">Citation</span>
+        </a>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="overview" class="hero-section">
+        <div class="hero-container">
+            <h1 class="hero-title">
+                <span class="gradient-text">ReNoV</span>
+                : Projected Representation Guidance for High-fidelity Novel View Synthesis
+            </h1>
+            <p class="hero-status">arXiv 2026</p>
+
+            <!-- Authors -->
+            <div class="hero-authors">
+                <span>Minseop Kwak<sup>*1</sup></span>
+                <span>Minkyung
+                    Kwon<sup>*1</sup></span>
+                <span>Jinhyeok
+                    Choi<sup>*1</sup></span>
+                <span>Jiho Park<sup>1</sup></span>
+                <span><a href="https://cvlab.kaist.ac.kr/members/faculty" target="_blank"
+                        rel="noopener noreferrer">Seungryong Kim</a><sup>&dagger;1</sup></span>
+            </div>
+
+            <div class="hero-affiliations">
+                <span><sup>1</sup>KAIST AI</span>
+            </div>
+
+            <div class="hero-notes">
+                <span>*: Equal contribution</span>
+                <span>&dagger;: Corresponding author</span>
+            </div>
+
+            <!-- Link Buttons -->
+            <div class="hero-buttons">
+                <a href="#" class="btn disabled"> <!-- Placeholder link -->
+                    <i class="fa-solid fa-file-pdf"></i> arXiv
+                </a>
+                <a href="https://github.com/cvlab-kaist/ReNoV" class="btn btn-outline" target="_blank" rel="noopener">
+                    <i class="fa-brands fa-github"></i> Code
+                </a>
+                <a href="#bibtex" class="btn btn-outline">
+                    <i class="fa-solid fa-quote-right"></i> BibTeX
+                </a>
+            </div>
+        </div>
+
+        <!-- Teaser Section -->
+        <div class="teaser-container">
+            <!-- TL;DR Box -->
+            <div class="tldr-box">
+                <div class="tldr-content">
+                    <span class="tldr-label">TL;DR</span>
+                    <p class="tldr-text">
+                        <span class="tldr-highlight">ReNoV</span> leverages powerful feature representations as prompts
+                        for diffusion-based novel view synthesis.
+                        By projecting these representations into 3D, we achieve <span
+                            class="tldr-highlight">high-fidelity reconstruction</span> and <span
+                            class="tldr-highlight">plausible inpainting</span>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Main Image -->
+            <div class="video-container" style="width: 100%; max-width: 1200px; margin: 2rem auto;">
+                <img src="assets/method-1.png" alt="ReNoV Teaser" style="width: 100%; border-radius: 8px;">
+            </div>
+        </div>
+    </section>
+
+    <!-- Abstract -->
+    <section id="abstract" class="section alt-bg">
+        <div class="container">
+            <h2 class="section-title">Abstract</h2>
+            <div class="abstract-text">
+                <p>
+                    We propose a novel framework for diffusion-based novel view synthesis in which we leverage external
+                    representations as conditions, harnessing their geometric and semantic correspondence properties for
+                    enhanced geometric consistency in generated novel viewpoints. First, we provide a detailed analysis
+                    exploring the correspondence capabilities emergent in the spatial attention of external visual
+                    representations. Building from these insights, we propose projected representation prompting,
+                    achieving representation-guided novel view synthesis through dedicated representation projection
+                    modules that inject external representations into the diffusion process, a methodology named
+                    <strong>ReNoV</strong> (<strong>Re</strong>presentation-guided <strong>No</strong>vel
+                    <strong>V</strong>iew synthesis). Our experiments show that this design yields marked improvements
+                    in both reconstruction fidelity and inpainting quality, outperforming prior diffusion‐based
+                    novel‐view methods on standard benchmarks and enabling robust synthesis from sparse, unposed image
+                    collections.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Motivation and Analysis Section -->
+    <section id="motivation" class="section">
+        <div class="container">
+            <h2 class="section-title">Motivation & Analysis</h2>
+
+            <div class="analysis-content">
+                <p>
+                    Unlike previous methods, we interpret novel view synthesis as a warping-and-inpainting problem,
+                    requiring models to excel at two tasks: accurate <strong>reconstruction</strong> of visible regions
+                    and consistent <strong>inpainting</strong> of occluded regions. This motivates the search for a
+                    conditioning representation that simultaneously encodes semantic awareness and geometric
+                    correspondence.
+                </p>
+
+                <div class="analysis-image-container">
+                    <img src="assets/motivation_attn-1.png" alt="Cross-view Attention Analysis" class="analysis-image">
+                </div>
+                <div class="results-caption">
+                    <p>
+                        <strong>Cross-view attention maps of the denoising network.</strong>
+                        A query pixel (blue dot) is chosen in the warped target view.
+                        <strong>Inpainting</strong>: the wheel is absent in the warped view, so attention shifts to the
+                        corresponding wheels in the references.
+                        <strong>Reconstruction</strong>: the suitcase edge is visible, so attention concentrates on the
+                        geometrically aligned edges.
+                    </p>
+                </div>
+
+                <h3 class="analysis-subtitle">Correspondence Capability Probing</h3>
+                <p>
+                    We evaluate cross-view similarity to assess geometric correspondence across layers of different
+                    visual backbones (VGGT, DA3, DINOv2).
+                </p>
+
+                <div class="analysis-charts-container">
+                    <img src="assets/analysis_geo-1.png" alt="Geometric Correspondence" style="width: 100%;">
+                    <img src="assets/analysis_sem-1.png" alt="Semantic Correspondence" style="width: 100%;">
+                    <img src="assets/analysis_lds-1.png" alt="Local vs Distant Similarity" style="width: 100%;">
+                </div>
+                <div class="results-caption">
+                    <p>
+                        <strong>Analysis of visual foundation models.</strong>
+                        (Left) Geometric correspondence, (Center) Semantic correspondence, & (Right) Local vs. Distant
+                        Similarity across feature layers.
+                    </p>
+                </div>
+
+                <div class="analysis-image-container">
+                    <img src="assets/geo_corr-1.png" alt="Geometric Correspondence Visualization"
+                        class="analysis-image">
+                </div>
+                <div class="results-caption">
+                    <p>
+                        <strong>Geometric correspondence visualization.</strong>
+                        Deeper layers of VGGT and DA3-L accurately identify geometrically corresponding locations across
+                        views, while DINOv2 often attends to semantically similar but geometrically incorrect regions.
+                    </p>
+                </div>
+
+                <h3 class="analysis-subtitle">Reconstruction Capability Probing</h3>
+                <p>
+                    Building on our geometric correspondence analysis, we evaluate the intermediate features'
+                    capabilities for reconstruction and inpainting. The optimal feature representation should
+                    encapsulate multi-view semantic and geometric information.
+                </p>
+
+                <div class="analysis-image-container">
+                    <img src="assets/results_recon-1.png" alt="Reconstruction Results" class="analysis-image">
+                </div>
+                <div class="results-caption">
+                    <p>
+                        <strong>Qualitative results for feature analysis.</strong>
+                        VGGT features consistently synthesize target-view images with more accurate structure and color
+                        compared to other representations.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Method Section -->
+    <section id="method" class="section alt-bg">
+        <div class="container">
+            <h2 class="section-title">Method</h2>
+
+            <div class="analysis-image-container">
+                <img src="assets/method-1.png" alt="ReNoV Method Overview" class="analysis-image">
+            </div>
+
+            <div class="results-caption">
+                <p>
+                    <strong>ReNoV Architecture.</strong> (upper path) <strong>Reference network</strong>: \(N\)
+                    reference images are passed through an external representation model (e.g., VGGT and DA3), producing
+                    layer-wise visual features, per-pixel point-maps, and camera pose estimates. These outputs are fused
+                    by a lightweight reference U-Net to form a multiview reference feature. The features and point-maps
+                    are then re-projected to the target camera frustum, yielding warped and aligned feature planes.
+                    (lower path) <strong>Denoising network</strong>: a denoising U-Net receives a noisy latent together
+                    with the warped image and projected feature planes; at each timestep it mixes the feature from
+                    reference network with its own generation features through cross-attention, progressively refining
+                    the latent to synthesize the novel target view.
+                </p>
+            </div>
+
+            <div class="cameo-description">
+                <div>
+                    <h3 class="analysis-subtitle">Projected Representation Prompting</h3>
+                    <p>
+                        We incorporate a geometry-driven conditioning mechanism based on warping. Specifically, we
+                        project the reference pointmaps \(\{P_1, \dots, P_N\}\) and the corresponding external
+                        representation features \(\{T_1, \dots, T_N\}\) into the target viewpoint \(\pi_{\text{tgt}}\).
+                        These projected signals provide spatial priors that guide the diffusion model toward
+                        higher-quality generation results. The projected pointmap \(\mathcal{P}^{\Pi}_{\text{tgt}}\)
+                        serves as a sparse geometric condition.
+                    </p>
+                    <p>
+                        Given the observed multiview-consistent nature of geometric external representations, we
+                        unproject them into 3D space by anchoring each pixel-level feature to its corresponding 3D
+                        coordinate, forming a 3D feature point cloud. This pointcloud is then projected into the target
+                        view, yielding a spatially aligned warped feature map. The projected features
+                        \(T_{\text{tgt}}^{\Pi}\) and projected pointmap \(X_{\text{tgt}}^{\Pi}\) are provided as input
+                        conditions to the denoising network.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Qualitative Results Section -->
+    <section id="results" class="section alt-bg">
+        <div class="container">
+            <h2 class="section-title">Qualitative Results</h2>
+
+            <div class="results-block">
+                <h3 class="analysis-subtitle">DTU (Zero-shot) Comparison</h3>
+                <div class="analysis-image-container">
+                    <img src="assets/results_dtu-1.png" alt="DTU Results" class="analysis-image">
+                </div>
+                <div class="results-caption">
+                    <p>Qualitative results on DTU dataset (Zero-shot evaluation).</p>
+                </div>
+            </div>
+
+            <div class="results-block">
+                <h3 class="analysis-subtitle">RealEstate10K Comparison</h3>
+                <div class="analysis-image-container">
+                    <img src="assets/results_re10k-1.png" alt="RealEstate10K Results" class="analysis-image">
+                </div>
+                <div class="results-caption">
+                    <p>Qualitative results on RealEstate10K dataset.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Quantitative Results -->
+    <section id="quantitative" class="section">
+        <div class="container">
+            <h2 class="section-title">Quantitative Results</h2>
+
+            <div class="results-block">
+                <h3 class="analysis-subtitle">Zero-shot Evaluation on DTU</h3>
+                <div class="table-container">
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">Views</th>
+                                <th rowspan="2">Method</th>
+                                <th rowspan="2">Pose-free</th>
+                                <th colspan="3">Far-view Setting</th>
+                                <th colspan="3">Near-view Setting</th>
+                            </tr>
+                            <tr>
+                                <th>PSNR↑</th>
+                                <th>SSIM↑</th>
+                                <th>LPIPS↓</th>
+                                <th>PSNR↑</th>
+                                <th>SSIM↑</th>
+                                <th>LPIPS↓</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="separator-row">
+                                <td colspan="9"></td>
+                            </tr>
+                            <!-- 2-view -->
+                            <tr>
+                                <td rowspan="8">2-view</td>
+                                <td>PixelSplat</td>
+                                <td>✗</td>
+                                <td>13.03</td>
+                                <td>0.486</td>
+                                <td>0.414</td>
+                                <td>11.57</td>
+                                <td>0.330</td>
+                                <td>0.634</td>
+                            </tr>
+                            <tr>
+                                <td>MVSplat</td>
+                                <td>✗</td>
+                                <td>12.22</td>
+                                <td>0.416</td>
+                                <td>0.423</td>
+                                <td>13.94</td>
+                                <td>0.473</td>
+                                <td>0.385</td>
+                            </tr>
+                            <tr>
+                                <td>NoPoSplat</td>
+                                <td>✓</td>
+                                <td>11.43</td>
+                                <td>0.335</td>
+                                <td>0.599</td>
+                                <td>11.44</td>
+                                <td>0.357</td>
+                                <td>0.576</td>
+                            </tr>
+                            <tr>
+                                <td>FLARE</td>
+                                <td>✗</td>
+                                <td>13.52</td>
+                                <td>0.407</td>
+                                <td>0.525</td>
+                                <td>13.25</td>
+                                <td>0.381</td>
+                                <td>0.502</td>
+                            </tr>
+                            <tr>
+                                <td>LVSM</td>
+                                <td>✗</td>
+                                <td><u>15.23</u></td>
+                                <td>0.499</td>
+                                <td>0.415</td>
+                                <td><strong>15.82</strong></td>
+                                <td>0.528</td>
+                                <td>0.346</td>
+                            </tr>
+                            <tr class="highlight-row">
+                                <td><strong>ReNoV</strong> w/ DINOv2</td>
+                                <td>✓</td>
+                                <td>15.13</td>
+                                <td><strong>0.599</strong></td>
+                                <td>0.304</td>
+                                <td>14.70</td>
+                                <td><strong>0.602</strong></td>
+                                <td>0.277</td>
+                            </tr>
+                            <tr class="highlight-row">
+                                <td><strong>ReNoV</strong> w/ VGGT</td>
+                                <td>✓</td>
+                                <td><strong>15.45</strong></td>
+                                <td><u>0.584</u></td>
+                                <td><strong>0.297</strong></td>
+                                <td><u>15.38</u></td>
+                                <td><u>0.599</u></td>
+                                <td><u>0.274</u></td>
+                            </tr>
+                            <tr class="highlight-row">
+                                <td><strong>ReNoV</strong> w/ DA3</td>
+                                <td>✓</td>
+                                <td>14.38</td>
+                                <td>0.550</td>
+                                <td><u>0.303</u></td>
+                                <td>14.91</td>
+                                <td>0.593</td>
+                                <td><strong>0.259</strong></td>
+                            </tr>
+                            <!-- 1-view -->
+                            <tr class="separator-row">
+                                <td colspan="9"></td>
+                            </tr>
+                            <tr>
+                                <td rowspan="6">1-view</td>
+                                <td>LucidDreamer</td>
+                                <td>✓</td>
+                                <td>12.96</td>
+                                <td>0.248</td>
+                                <td>0.385</td>
+                                <td>12.09</td>
+                                <td>0.481</td>
+                                <td>0.419</td>
+                            </tr>
+                            <tr>
+                                <td>GenWarp</td>
+                                <td>✓</td>
+                                <td>8.69</td>
+                                <td>0.253</td>
+                                <td>0.597</td>
+                                <td>9.54</td>
+                                <td>0.298</td>
+                                <td>0.538</td>
+                            </tr>
+                            <tr>
+                                <td>ViewCrafter</td>
+                                <td>✓</td>
+                                <td>14.04</td>
+                                <td>0.390</td>
+                                <td>0.332</td>
+                                <td>13.59</td>
+                                <td>0.382</td>
+                                <td>0.486</td>
+                            </tr>
+                            <tr class="highlight-row">
+                                <td><strong>ReNoV</strong> w/ DINOv2</td>
+                                <td>✓</td>
+                                <td><strong>15.02</strong></td>
+                                <td><strong>0.579</strong></td>
+                                <td><u>0.328</u></td>
+                                <td><strong>14.13</strong></td>
+                                <td><strong>0.574</strong></td>
+                                <td><u>0.304</u></td>
+                            </tr>
+                            <tr class="highlight-row">
+                                <td><strong>ReNoV</strong> w/ VGGT</td>
+                                <td>✓</td>
+                                <td>14.08</td>
+                                <td><u>0.536</u></td>
+                                <td>0.355</td>
+                                <td>13.91</td>
+                                <td>0.542</td>
+                                <td>0.333</td>
+                            </tr>
+                            <tr class="highlight-row">
+                                <td><strong>ReNoV</strong> w/ DA3</td>
+                                <td>✓</td>
+                                <td><u>14.35</u></td>
+                                <td>0.534</td>
+                                <td><strong>0.325</strong></td>
+                                <td><u>14.12</u></td>
+                                <td><u>0.550</u></td>
+                                <td><strong>0.292</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="results-block">
+                <h3 class="analysis-subtitle">In-domain Evaluation on RealEstate10K</h3>
+                <div class="table-container" style="max-width: 800px; margin: 0 auto;">
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>PSNR↑</th>
+                                <th>SSIM↑</th>
+                                <th>LPIPS↓</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>PixelSplat</td>
+                                <td>14.01</td>
+                                <td>0.582</td>
+                                <td>0.384</td>
+                            </tr>
+                            <tr>
+                                <td>MVSplat</td>
+                                <td>12.13</td>
+                                <td>0.534</td>
+                                <td>0.380</td>
+                            </tr>
+                            <tr>
+                                <td>NopoSplat</td>
+                                <td>14.36</td>
+                                <td>0.538</td>
+                                <td>0.389</td>
+                            </tr>
+                            <tr class="highlight-row">
+                                <td><strong>ReNoV w/ VGGT (Ours)</strong></td>
+                                <td><strong>17.49</strong></td>
+                                <td><strong>0.598</strong></td>
+                                <td><strong>0.247</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="chart-grid cols-2">
+                <div class="chart-card">
+                    <h4 class="chart-card-title">Ablation Study</h4>
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th>Components</th>
+                                <th>PSNR↑</th>
+                                <th>SSIM↑</th>
+                                <th>LPIPS↓</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>(a) Warped image only</td>
+                                <td>16.55</td>
+                                <td>0.559</td>
+                                <td>0.260</td>
+                            </tr>
+                            <tr>
+                                <td>(b) Warped image + Pointmap</td>
+                                <td>16.93</td>
+                                <td>0.594</td>
+                                <td><strong>0.243</strong></td>
+                            </tr>
+                            <tr class="highlight-row">
+                                <td>(c) Pointmap + VGGT Feature</td>
+                                <td><strong>17.50</strong></td>
+                                <td><strong>0.598</strong></td>
+                                <td>0.247</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="chart-card">
+                    <h4 class="chart-card-title">Robustness to Degraded Geometry</h4>
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th>Removal %</th>
+                                <th>PSNR↑</th>
+                                <th>SSIM↑</th>
+                                <th>LPIPS↓</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>0% (Original)</td>
+                                <td>12.04</td>
+                                <td>0.509</td>
+                                <td>0.371</td>
+                            </tr>
+                            <tr>
+                                <td>30% removal</td>
+                                <td>11.89</td>
+                                <td>0.507</td>
+                                <td>0.366</td>
+                            </tr>
+                            <tr>
+                                <td>50% removal</td>
+                                <td>11.92</td>
+                                <td>0.507</td>
+                                <td>0.367</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center;">Performance remains stable
+                        even with significant point cloud degradation.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Citation Section -->
+    <section id="citation" class="citation-section">
+        <div class="container">
+            <h2 class="section-title" style="font-size: 1.5rem; border: none; margin-bottom: 1rem;">Citation</h2>
+            <div class="citation-block group">
+                <button onclick="copyBibtex()" class="citation-copy-btn">
+                    <i class="fa-regular fa-copy"></i> Copy
+                </button>
+                <div id="bibtex-text">@article{kwak2026renov,
+                    title={Projected Representation Prompting for High-fidelity Novel View Synthesis},
+                    author={Kwak, Minseop and Kwon, Minkyung and Choi, Jinhyeok and Park, Jiho and Kim, Seungryong},
+                    journal={arXiv preprint},
+                    year={2026}
+                    }</div>
+                <pre class="citation-code"><code id="bibtex-code">@article{kwak2026renov,
+  title={Projected Representation Prompting for High-fidelity Novel View Synthesis},
+  author={Kwak, Minseop and Kwon, Minkyung and Choi, Jinhyeok and Park, Jiho and Kim, Seungryong},
+  journal={arXiv preprint}, 
+  year={2026}
+}</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>ReNoV: Projected Representation Prompting for High-fidelity Novel View Synthesis.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Fade-in Animation
+        function initFadeInAnimations() {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const sections = document.querySelectorAll('.section, .hero-section, .citation-section, .footer');
+            sections.forEach(section => {
+                section.classList.add('fade-in-section');
+                observer.observe(section);
+            });
+        }
+
+        // Image Comparison Slider Logic
+        function initComparisons() {
+            var x, i;
+            // Flags to ensure animation happens once per section
+            let hasAnimatedTeaser = false;
+            let hasAnimatedQual = false;
+
+            x = document.getElementsByClassName("img-comp-overlay");
+            for (i = 0; i < x.length; i++) {
+                compareImages(x[i]);
+            }
+
+            function compareImages(img) {
+                // Check if slider already exists
+                if (img.parentElement.querySelector('.img-comp-slider')) {
+                    return;
+                }
+
+                var slider, clicked = 0, w, h;
+                // Use parent container for dimensions to be safe
+                w = img.parentElement.offsetWidth;
+                h = img.parentElement.offsetHeight;
+
+                var overlayImg = img.getElementsByTagName("img")[0];
+                if (overlayImg) {
+                    overlayImg.style.width = w + "px";
+                    overlayImg.style.maxWidth = "none";
+                }
+
+                img.style.width = (w / 2) + "px";
+
+                slider = document.createElement("DIV");
+                slider.setAttribute("class", "img-comp-slider");
+                img.parentElement.insertBefore(slider, img);
+
+                slider.style.top = (h / 2) - (slider.offsetHeight / 2) + "px";
+                slider.style.left = (w / 2) - (slider.offsetWidth / 2) + "px";
+
+                slider.addEventListener("mousedown", slideReady);
+                window.addEventListener("mouseup", slideFinish);
+                slider.addEventListener("touchstart", slideReady);
+                window.addEventListener("touchend", slideFinish);
+
+                // Auto-slide Animation
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && !slider.dataset.animated) {
+                            let shouldAnimate = false;
+
+                            // Check if it's in Teaser section
+                            if (img.closest('.teaser-container') && !hasAnimatedTeaser) {
+                                shouldAnimate = true;
+                                hasAnimatedTeaser = true;
+                            }
+                            // Check if it's in Qualitative section
+                            else if (img.closest('#carousel-qual') && !hasAnimatedQual) {
+                                shouldAnimate = true;
+                                hasAnimatedQual = true;
+                            }
+
+                            if (shouldAnimate) {
+                                slider.dataset.animated = "true";
+                                animateSlider();
+                            }
+                        }
+                    });
+                }, { threshold: 0.5 });
+
+                observer.observe(img.parentElement);
+
+                function animateSlider() {
+                    const start = w / 2;
+                    const target = w * 0.25; // Move to left to reveal CAMEO
+                    const duration = 1000;
+                    const startTime = performance.now();
+
+                    function step(currentTime) {
+                        const elapsed = currentTime - startTime;
+                        let progress = elapsed / duration;
+
+                        if (progress > 1) progress = 1;
+
+                        let currentPos;
+                        // 0 -> 0.5: Center to Left
+                        // 0.5 -> 1.0: Left to Center
+
+                        if (progress < 0.5) {
+                            const p = progress / 0.5;
+                            // Ease out cubic
+                            const ease = 1 - Math.pow(1 - p, 3);
+                            currentPos = start + (target - start) * ease;
+                        } else {
+                            const p = (progress - 0.5) / 0.5;
+                            // Ease out cubic
+                            const ease = 1 - Math.pow(1 - p, 3);
+                            currentPos = target + (start - target) * ease;
+                        }
+
+                        slide(currentPos);
+
+                        if (progress < 1) {
+                            requestAnimationFrame(step);
+                        }
+                    }
+
+                    requestAnimationFrame(step);
+                }
+
+                // Update dimensions on window resize
+                window.addEventListener('resize', function () {
+                    w = img.parentElement.offsetWidth;
+                    h = img.parentElement.offsetHeight;
+                    if (overlayImg) {
+                        overlayImg.style.width = w + "px";
+                    }
+                    // Recenter slider vertically
+                    slider.style.top = (h / 2) - (slider.offsetHeight / 2) + "px";
+                    // Note: We keep the current slider horizontal position (in pixels) 
+                    // which might drift on resize, but fixing the image width is most important.
+                });
+
+                function slideReady(e) {
+                    e.preventDefault();
+                    clicked = 1;
+                    window.addEventListener("mousemove", slideMove);
+                    window.addEventListener("touchmove", slideMove);
+                }
+
+                function slideFinish() {
+                    clicked = 0;
+                }
+
+                function slideMove(e) {
+                    var pos;
+                    if (clicked == 0) return false;
+                    pos = getCursorPos(e);
+                    if (pos < 0) pos = 0;
+                    if (pos > w) pos = w;
+                    slide(pos);
+                }
+
+                function getCursorPos(e) {
+                    var a, x = 0;
+                    e = (e.changedTouches) ? e.changedTouches[0] : e;
+                    a = img.getBoundingClientRect();
+                    x = e.pageX - a.left;
+                    x = x - window.pageXOffset;
+                    return x;
+                }
+
+                function slide(x, fromSync = false) {
+                    img.style.width = x + "px";
+                    slider.style.left = img.offsetWidth - (slider.offsetWidth / 2) + "px";
+                }
+            }
+        }
+
+        // Scroll Spy for Sidebar
+        function initScrollSpy() {
+            const sections = document.querySelectorAll('section[id]');
+            const sidebarLinks = document.querySelectorAll('.sidebar-item');
+            const sidebar = document.querySelector('.sidebar');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '-50% 0px -50% 0px',
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+
+                        // Remove active class from all sidebar items
+                        sidebarLinks.forEach(link => {
+                            link.classList.remove('active');
+                        });
+
+                        // Add active class to the corresponding sidebar item
+                        const activeLink = document.querySelector(`.sidebar-item[href="#${id}"]`);
+                        if (activeLink) {
+                            activeLink.classList.add('active');
+
+                            // Update gradient position
+                            const linkRect = activeLink.getBoundingClientRect();
+                            const sidebarRect = sidebar.getBoundingClientRect();
+                            const relativeTop = linkRect.top - sidebarRect.top;
+                            sidebar.style.setProperty('--active-position', `${relativeTop - 32}px`);
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        }
+
+        function copyBibtex() {
+            const text = document.getElementById('bibtex-text').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.querySelector('.citation-copy-btn');
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                setTimeout(() => {
+                    btn.innerHTML = original;
+                }, 2000);
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initComparisons();
+            initScrollSpy();
+            initFadeInAnimations();
+        });
+    </script>
+</body>
+
+</html>
+```
