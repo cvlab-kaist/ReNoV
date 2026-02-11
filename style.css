@@ -1,5 +1,5 @@
 /* 
- * CAMEO Project Page Styles
+ * ReNoV Project Page Styles
  * Semantic CSS Architecture
  */
 
@@ -560,7 +560,7 @@ p {
     text-align: center;
 }
 
-.img-comp-badge.cameo {
+.img-comp-badge.renov {
     right: 1rem;
     background-color: #F8FEFB;
     color: #20879A;
@@ -643,8 +643,8 @@ p {
     color: var(--color-primary-dark);
 }
 
-/* CAMEO Section */
-.cameo-layout {
+/* ReNoV Section */
+.renov-layout {
     display: flex;
     flex-direction: column;
     gap: 3rem;
@@ -653,7 +653,7 @@ p {
 
 
 
-.cameo-visual img {
+.renov-visual img {
     width: 100%;
     height: auto;
     object-fit: contain;
@@ -661,7 +661,7 @@ p {
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
-.cameo-description {
+.renov-description {
     font-size: 1.25rem;
     color: var(--color-text-main);
     display: flex;
@@ -906,7 +906,7 @@ p {
     background-color: var(--color-cat3d);
 }
 
-.bg-cameo {
+.bg-renov {
     background-color: var(--color-primary);
 }
 

@@ -41,13 +41,13 @@
             <div class="sidebar-dot"></div>
             <span class="sidebar-label">Method</span>
         </a>
-        <a href="#quantitative" class="sidebar-item">
-            <div class="sidebar-dot"></div>
-            <span class="sidebar-label">Quantitative</span>
-        </a>
         <a href="#results" class="sidebar-item">
             <div class="sidebar-dot"></div>
             <span class="sidebar-label">Qualitative</span>
+        </a>
+        <a href="#quantitative" class="sidebar-item">
+            <div class="sidebar-dot"></div>
+            <span class="sidebar-label">Quantitative</span>
         </a>
         <a href="#citation" class="sidebar-item">
             <div class="sidebar-dot"></div>
@@ -59,25 +59,25 @@
     <section id="overview" class="hero-section">
         <div class="hero-container">
             <h1 class="hero-title">
-                <span class="gradient-text">ReNoV</span>
-                : Projected Representation Guidance for High-fidelity Novel View Synthesis
+                <span class="gradient-text">ReNoV</span>: Projected Representation Prompting for High-fidelity Novel
+                View Synthesis
             </h1>
             <p class="hero-status">arXiv 2026</p>
 
             <!-- Authors -->
             <div class="hero-authors">
-                <span>Minseop Kwak<sup>*1</sup></span>
+                <span>Minseop Kwak<sup>*</sup></span>
                 <span>Minkyung
-                    Kwon<sup>*1</sup></span>
+                    Kwon<sup>*</sup></span>
                 <span>Jinhyeok
-                    Choi<sup>*1</sup></span>
-                <span>Jiho Park<sup>1</sup></span>
+                    Choi<sup>*</sup></span>
+                <span>Jiho Park<sup></sup></span>
                 <span><a href="https://cvlab.kaist.ac.kr/members/faculty" target="_blank"
-                        rel="noopener noreferrer">Seungryong Kim</a><sup>&dagger;1</sup></span>
+                        rel="noopener noreferrer">Seungryong Kim</a><sup>&dagger;</sup></span>
             </div>
 
             <div class="hero-affiliations">
-                <span><sup>1</sup>KAIST AI</span>
+                <span><sup></sup>KAIST AI</span>
             </div>
 
             <div class="hero-notes">
@@ -117,7 +117,7 @@
 
             <!-- Main Image -->
             <div class="video-container" style="width: 100%; max-width: 1200px; margin: 2rem auto;">
-                <img src="assets/method-1.png" alt="ReNoV Teaser" style="width: 100%; border-radius: 8px;">
+                <img src="assets/teaser.png" alt="ReNoV Teaser" style="width: 100%; border-radius: 8px;">
             </div>
         </div>
     </section>
@@ -152,7 +152,7 @@
 
             <div class="analysis-content">
                 <p>
-                    Unlike previous methods, we interpret novel view synthesis as a warping-and-inpainting problem,
+                    We interpret novel view synthesis as a warping-and-inpainting problem,
                     requiring models to excel at two tasks: accurate <strong>reconstruction</strong> of visible regions
                     and consistent <strong>inpainting</strong> of occluded regions. This motivates the search for a
                     conditioning representation that simultaneously encodes semantic awareness and geometric
@@ -188,7 +188,7 @@
                     <p>
                         <strong>Analysis of visual foundation models.</strong>
                         (Left) Geometric correspondence, (Center) Semantic correspondence, & (Right) Local vs. Distant
-                        Similarity across feature layers.
+                        Similarity across layers.
                     </p>
                 </div>
 
@@ -231,30 +231,29 @@
             <h2 class="section-title">Method</h2>
 
             <div class="analysis-image-container">
-                <img src="assets/method-1.png" alt="ReNoV Method Overview" class="analysis-image">
+                <img src="assets/teaser.png" alt="ReNoV Method Overview" class="analysis-image">
             </div>
 
             <div class="results-caption">
                 <p>
-                    <strong>ReNoV Architecture.</strong> (upper path) <strong>Reference network</strong>: \(N\)
-                    reference images are passed through an external representation model (e.g., VGGT and DA3), producing
-                    layer-wise visual features, per-pixel point-maps, and camera pose estimates. These outputs are fused
-                    by a lightweight reference U-Net to form a multiview reference feature. The features and point-maps
-                    are then re-projected to the target camera frustum, yielding warped and aligned feature planes.
-                    (lower path) <strong>Denoising network</strong>: a denoising U-Net receives a noisy latent together
-                    with the warped image and projected feature planes; at each timestep it mixes the feature from
-                    reference network with its own generation features through cross-attention, progressively refining
-                    the latent to synthesize the novel target view.
+                    <strong>ReNoV architecture.</strong> Given \(N\) reference images, we extract visual features, dense
+                    point clouds, and camera poses using an external representation model (e.g., VGGT, DA3-L, or
+                    DINOv2). These components undergo projected representation prompting, where reference features and
+                    point clouds are projected into the target camera frustum to form warped representation and
+                    point-map
+                    planes. The reference network aggregates these multi-view inputs by passing them as keys and values
+                    to denoising network. Simultaneously, the denoising network receives the projected feature and point
+                    cloud planes as direct conditioning, aggregating reference cues to synthesize the novel view image.
                 </p>
             </div>
 
-            <div class="cameo-description">
+            <div class="renov-description">
                 <div>
                     <h3 class="analysis-subtitle">Projected Representation Prompting</h3>
                     <p>
                         We incorporate a geometry-driven conditioning mechanism based on warping. Specifically, we
-                        project the reference pointmaps \(\{P_1, \dots, P_N\}\) and the corresponding external
-                        representation features \(\{T_1, \dots, T_N\}\) into the target viewpoint \(\pi_{\text{tgt}}\).
+                        project the reference pointmaps \(\{P_1, \dots, P_N\}\) and the corresponding external feature
+                        representations \(\{T_1, \dots, T_N\}\) into the target viewpoint \(\pi_{\text{tgt}}\).
                         These projected signals provide spatial priors that guide the diffusion model toward
                         higher-quality generation results. The projected pointmap \(\mathcal{P}^{\Pi}_{\text{tgt}}\)
                         serves as a sparse geometric condition.
@@ -727,7 +726,7 @@
 
                 function animateSlider() {
                     const start = w / 2;
-                    const target = w * 0.25; // Move to left to reveal CAMEO
+                    const target = w * 0.25; // Move to left to reveal ReNoV
                     const duration = 1000;
                     const startTime = performance.now();
 
