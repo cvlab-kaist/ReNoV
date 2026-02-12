@@ -21,7 +21,7 @@ KAIST AI
 <br>
 
 <div align="center">
-  <img src="assets/teaser.png" alt="ReNoV Teaser" width="100%">
+  <img src="assets/architecture.png" alt="ReNoV Architecture" width="100%">
 </div>
 
 ## Abstract
