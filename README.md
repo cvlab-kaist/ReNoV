@@ -3,7 +3,7 @@
 
 <h1>
   <span style="color:#006d6d;"><b>ReNoV:</b></span><br>
-  Projected Representation Prompting for High-fidelity Novel View Synthesis
+  Projected Representation Conditioning for High-fidelity Novel View Synthesis
 </h1>
 
 [![Project Page](https://img.shields.io/badge/Project-Page-green)](https://cvlab-kaist.github.io/ReNoV/)
@@ -26,7 +26,7 @@ KAIST AI
 
 ## Abstract
 
-We propose a novel framework for diffusion-based novel view synthesis in which we leverage external representations as conditions, harnessing their geometric and semantic correspondence properties for enhanced geometric consistency in generated novel viewpoints. First, we provide a detailed analysis exploring the correspondence capabilities emergent in the spatial attention of external visual representations. Building from these insights, we propose projected representation prompting, achieving representation-guided novel view synthesis through dedicated representation projection modules that inject external representations into the diffusion process, a methodology named **ReNoV** (**Re**presentation-guided **No**vel **V**iew synthesis). Our experiments show that this design yields marked improvements in both reconstruction fidelity and inpainting quality, outperforming prior diffusion‐based novel‐view methods on standard benchmarks and enabling robust synthesis from sparse, unposed image collections.
+We propose a novel framework for diffusion-based novel view synthesis in which we leverage external representations as conditions, harnessing their geometric and semantic correspondence properties for enhanced geometric consistency in generated novel viewpoints. First, we provide a detailed analysis exploring the correspondence capabilities emergent in the spatial attention of external visual representations. Building from these insights, we propose a representation-guided novel view synthesis through dedicated representation projection modules that inject external representations into the diffusion process, a methodology named **ReNoV** (**Re**presentation-guided **No**vel **V**iew synthesis). Our experiments show that this design yields marked improvements in both reconstruction fidelity and inpainting quality, outperforming prior diffusion‐based novel‐view methods on standard benchmarks and enabling robust synthesis from sparse, unposed image collections.
 
 
 ## To Do
@@ -40,7 +40,7 @@ If you find our work useful in your research, please consider citing:
 
 ```bibtex
 @article{kwak2026renov,
-  title={Projected Representation Prompting for High-fidelity Novel View Synthesis},
+  title={Projected Representation Conditioning for High-fidelity Novel View Synthesis},
   author={Kwak, Minseop and Kwon, Minkyung and Choi, Jinhyeok and Park, Jiho and Kim, Seungryong},
   journal={arXiv preprint}, 
   year={2026}
