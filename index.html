@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReNoV: Projected Representation Prompting for High-fidelity Novel View Synthesis</title>
+    <title>ReNoV: Projected Representation Conditioning for High-fidelity Novel View Synthesis</title>
     <meta name="description"
-        content="Project page for ReNoV: Projected Representation Prompting for High-fidelity Novel View Synthesis">
+        content="Project page for ReNoV: Projected Representation Conditioning for High-fidelity Novel View Synthesis">
 
     <!-- Fonts and Icons -->
     <link rel="stylesheet"
@@ -41,13 +41,13 @@
             <div class="sidebar-dot"></div>
             <span class="sidebar-label">Method</span>
         </a>
-        <a href="#results" class="sidebar-item">
-            <div class="sidebar-dot"></div>
-            <span class="sidebar-label">Qualitative</span>
-        </a>
         <a href="#quantitative" class="sidebar-item">
             <div class="sidebar-dot"></div>
             <span class="sidebar-label">Quantitative</span>
+        </a>
+        <a href="#results" class="sidebar-item">
+            <div class="sidebar-dot"></div>
+            <span class="sidebar-label">Qualitative</span>
         </a>
         <a href="#citation" class="sidebar-item">
             <div class="sidebar-dot"></div>
@@ -59,25 +59,25 @@
     <section id="overview" class="hero-section">
         <div class="hero-container">
             <h1 class="hero-title">
-                <span class="gradient-text">ReNoV</span>: Projected Representation Prompting for High-fidelity Novel
+                <span class="gradient-text">ReNoV</span>: Projected Representation Conditioning for High-fidelity Novel
                 View Synthesis
             </h1>
             <p class="hero-status">arXiv 2026</p>
 
             <!-- Authors -->
             <div class="hero-authors">
-                <span>Minseop Kwak<sup>*</sup></span>
+                <span>Minseop Kwak<sup>*1</sup></span>
                 <span>Minkyung
-                    Kwon<sup>*</sup></span>
+                    Kwon<sup>*1</sup></span>
                 <span>Jinhyeok
-                    Choi<sup>*</sup></span>
-                <span>Jiho Park<sup></sup></span>
+                    Choi<sup>*1</sup></span>
+                <span>Jiho Park<sup>1</sup></span>
                 <span><a href="https://cvlab.kaist.ac.kr/members/faculty" target="_blank"
-                        rel="noopener noreferrer">Seungryong Kim</a><sup>&dagger;</sup></span>
+                        rel="noopener noreferrer">Seungryong Kim</a><sup>&dagger;1</sup></span>
             </div>
 
             <div class="hero-affiliations">
-                <span><sup></sup>KAIST AI</span>
+                <span><sup>1</sup>KAIST AI</span>
             </div>
 
             <div class="hero-notes">
@@ -116,9 +116,9 @@
             </div>
 
             <!-- Main Image -->
-            <div class="video-container" style="width: 100%; max-width: 1200px; margin: 2rem auto;">
-                <img src="assets/teaser.png" alt="ReNoV Teaser" style="width: 100%; border-radius: 8px;">
-            </div>
+            <!-- <div class="video-container" style="width: 100%; max-width: 1200px; margin: 2rem auto;">
+                <img src="assets/method-1.png" alt="ReNoV Teaser" style="width: 100%; border-radius: 8px;">
+            </div> -->
         </div>
     </section>
 
@@ -132,9 +132,9 @@
                     representations as conditions, harnessing their geometric and semantic correspondence properties for
                     enhanced geometric consistency in generated novel viewpoints. First, we provide a detailed analysis
                     exploring the correspondence capabilities emergent in the spatial attention of external visual
-                    representations. Building from these insights, we propose projected representation prompting,
-                    achieving representation-guided novel view synthesis through dedicated representation projection
-                    modules that inject external representations into the diffusion process, a methodology named
+                    representations. Building from these insights, we propose a representation-guided novel view
+                    synthesis through dedicated representation projection modules that inject external representations
+                    into the diffusion process, a methodology named
                     <strong>ReNoV</strong> (<strong>Re</strong>presentation-guided <strong>No</strong>vel
                     <strong>V</strong>iew synthesis). Our experiments show that this design yields marked improvements
                     in both reconstruction fidelity and inpainting quality, outperforming prior diffusion‐based
@@ -152,7 +152,7 @@
 
             <div class="analysis-content">
                 <p>
-                    We interpret novel view synthesis as a warping-and-inpainting problem,
+                    Unlike previous methods, we interpret novel view synthesis as a warping-and-inpainting problem,
                     requiring models to excel at two tasks: accurate <strong>reconstruction</strong> of visible regions
                     and consistent <strong>inpainting</strong> of occluded regions. This motivates the search for a
                     conditioning representation that simultaneously encodes semantic awareness and geometric
@@ -188,7 +188,7 @@
                     <p>
                         <strong>Analysis of visual foundation models.</strong>
                         (Left) Geometric correspondence, (Center) Semantic correspondence, & (Right) Local vs. Distant
-                        Similarity across layers.
+                        Similarity across feature layers.
                     </p>
                 </div>
 
@@ -231,14 +231,15 @@
             <h2 class="section-title">Method</h2>
 
             <div class="analysis-image-container">
-                <img src="assets/teaser.png" alt="ReNoV Method Overview" class="analysis-image">
+                <img src="assets/method-1.png" alt="ReNoV Method Overview" class="analysis-image">
             </div>
 
             <div class="results-caption">
                 <p>
-                    <strong>ReNoV architecture.</strong> Given \(N\) reference images, we extract visual features, dense
-                    point clouds, and camera poses using an external representation model (e.g., VGGT, DA3-L, or
-                    DINOv2). These components undergo projected representation prompting, where reference features and
+                    <strong>ReNoV Architecture.</strong> Given \(N\) reference images, we extract visual features, dense
+                    point clouds, and camera poses using an external representation model (e.g., VGGT, DA3, or
+                    DINOv2). These components undergo projected representation conditioning, where reference features
+                    and
                     point clouds are projected into the target camera frustum to form warped representation and
                     point-map
                     planes. The reference network aggregates these multi-view inputs by passing them as keys and values
@@ -249,11 +250,11 @@
 
             <div class="renov-description">
                 <div>
-                    <h3 class="analysis-subtitle">Projected Representation Prompting</h3>
+                    <h3 class="analysis-subtitle">Projected Representation Conditioning</h3>
                     <p>
                         We incorporate a geometry-driven conditioning mechanism based on warping. Specifically, we
-                        project the reference pointmaps \(\{P_1, \dots, P_N\}\) and the corresponding external feature
-                        representations \(\{T_1, \dots, T_N\}\) into the target viewpoint \(\pi_{\text{tgt}}\).
+                        project the reference pointmaps \(\{P_1, \dots, P_N\}\) and the corresponding external
+                        representation features \(\{T_1, \dots, T_N\}\) into the target viewpoint \(\pi_{\text{tgt}}\).
                         These projected signals provide spatial priors that guide the diffusion model toward
                         higher-quality generation results. The projected pointmap \(\mathcal{P}^{\Pi}_{\text{tgt}}\)
                         serves as a sparse geometric condition.
@@ -607,13 +608,13 @@
                     <i class="fa-regular fa-copy"></i> Copy
                 </button>
                 <div id="bibtex-text">@article{kwak2026renov,
-                    title={Projected Representation Prompting for High-fidelity Novel View Synthesis},
+                    title={Projected Representation Conditioning for High-fidelity Novel View Synthesis},
                     author={Kwak, Minseop and Kwon, Minkyung and Choi, Jinhyeok and Park, Jiho and Kim, Seungryong},
                     journal={arXiv preprint},
                     year={2026}
                     }</div>
                 <pre class="citation-code"><code id="bibtex-code">@article{kwak2026renov,
-  title={Projected Representation Prompting for High-fidelity Novel View Synthesis},
+  title={Projected Representation Conditioning for High-fidelity Novel View Synthesis},
   author={Kwak, Minseop and Kwon, Minkyung and Choi, Jinhyeok and Park, Jiho and Kim, Seungryong},
   journal={arXiv preprint}, 
   year={2026}
@@ -625,7 +626,7 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>ReNoV: Projected Representation Prompting for High-fidelity Novel View Synthesis.</p>
+            <p>ReNoV: Projected Representation Conditioning for High-fidelity Novel View Synthesis.</p>
         </div>
     </footer>
 
